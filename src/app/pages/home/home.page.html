@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-title>Recycler</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list color="success">
+    <ion-item color="success">
+      <ion-avatar slot="start">
+        <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+      </ion-avatar>
+      <ion-label>
+        <h1>Paulo Alves</h1>
+        <p>Gathered: <span class="money">$15</span></p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-title>
+        <ion-card-subtitle>
+          Last Pickup Call
+        </ion-card-subtitle>
+      </ion-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-icon name="hourglass-outline" slot="start" color="warning"></ion-icon>
+        <ion-label>
+          On hold
+          <p>10/19/2023</p>
+          <p>Notes: We have two full bags We have two full bags We have two full bags</p>
+        </ion-label>
+      </ion-item>
+      <ion-button color="success" fill="clear" size="full">See all...</ion-button>
+    </ion-card-content>
+  </ion-card>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="success">
+      <ion-icon name="add">
+        
+      </ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
