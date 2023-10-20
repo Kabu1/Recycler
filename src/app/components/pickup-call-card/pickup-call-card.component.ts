@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PickupCallCardComponent  implements OnInit {
   hasHeader: boolean = true;
-  hasFooter: boolean = false;
+  hasFooter: boolean = true;
   constructor() {
 
    }
