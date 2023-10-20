@@ -1,11 +1,6 @@
 <ion-card>
-  <ion-card-header *ngIf="hasHeader">
-    <ion-title>
-      <ion-card-subtitle>
-        Last Pickup Call
-      </ion-card-subtitle>
-    </ion-title>
-  </ion-card-header>
+<ng-content select="[header]"></ng-content>
+
   <ion-card-content>
     <ion-item lines="none">
       <ion-icon *ngIf="status === 'Hold'" name="hourglass-outline" slot="start" color="warning"></ion-icon>
@@ -23,7 +18,6 @@
       </ion-label>
     </ion-item>
 
-    <ion-button *ngIf="hasFooter" color="success" fill="clear" size="full">See all...</ion-button>
     <ion-item *ngIf="status === 'Completed'" line="none">
       <ion-icon name="trophy" slot="start" color="success">
       </ion-icon>
@@ -31,5 +25,7 @@
         {{ earning }}
       </ion-label>
     </ion-item>
+    <ng-content select="[footer]"></ng-content>
+
   </ion-card-content>
 </ion-card>
