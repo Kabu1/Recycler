@@ -6,8 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./pickup-call-card.component.scss'],
 })
 export class PickupCallCardComponent  implements OnInit {
+  hasHeader: boolean = true;
+  hasFooter: boolean = false;
+  constructor() {
 
-  constructor() { }
+   }
 
   ngOnInit() {}
 
