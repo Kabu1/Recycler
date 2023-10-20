@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { LoaderPage } from './loader.page';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -21,9 +21,10 @@ describe('LoaderPage', () => {
     });
   }));
 
-  it('should go to login after load', async () => {
+  it('should go to login after load', fakeAsync(() => {
     spyOn(router, 'navigate')
     component.ngOnInit();
+    tick(1500);
     expect(router.navigate).toHaveBeenCalledWith(['login'])
-  });
+  }));
 });
