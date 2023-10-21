@@ -11,9 +11,16 @@
           <ion-item>
             <ion-input label="email" formControlName="email" labelPlacement="floating" type='email' placeholder="email"></ion-input>
           </ion-item>
+          <ion-label color="danger" *ngIf="form.get('email')?.touched && form.get('email')?.errors?.['required']"> * Email is Mandatory</ion-label>
+
+          <ion-label color="danger" *ngIf="form.get('email')?.touched && form.get('email')?.errors?.['email']">* Email is Invalid</ion-label>
+
+
           <ion-item>
             <ion-input label="password" formControlName="password" labelPlacement="floating" type='password' placeholder="password"></ion-input>
           </ion-item>
+          <ion-label color="danger" *ngIf="form.get('password')?.touched && form.get('password')?.errors?.['required']">* Password is Mandatory</ion-label>
+
           <ion-button color="dark" size="full" fill="clear">Forgot Email/Password</ion-button>
           <ion-button color="success" (click)="login()" size="full">Login</ion-button>
           <ion-button color="success" (click)="register()" size="full" fill="clear">Register</ion-button>
