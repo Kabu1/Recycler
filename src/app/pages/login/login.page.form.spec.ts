@@ -26,15 +26,15 @@ describe('LoginPageForm', ()=> {
         expect(form.get('email')?.valid).toBeFalsy();
     })
     it('should have an email valid if email is  valid', () => {
-        form.get('email')?.setValue('email');
+        form.get('email')?.setValue('valid@email.com');
         expect(form.get('email')?.valid).toBeTruthy();
     })
+    //fail
     it('should have an valid form', () => {
-        form.get('email')?.setValue('valid email');
-        form.get('password')?.setValue('invalid email');
+        form.get('email')?.setValue('valid@email.com');
+        form.get('password')?.setValue('validpassword');
 
         expect(form.valid).toBeTruthy();
     })
     
 });
-

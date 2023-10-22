@@ -9,7 +9,7 @@ import { LoginPageForm } from './login.page.form';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  form!: FormGroup
+  form!: FormGroup;
   constructor(private router: Router, private formbuilder: FormBuilder) { }
 
   ngOnInit() {
