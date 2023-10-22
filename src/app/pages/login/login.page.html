@@ -26,8 +26,8 @@
           <ion-label color="danger" *ngIf="form.get('password')?.touched && form.get('password')?.errors?.['required']">* Password is Mandatory</ion-label>
           <!-- <app-error-message [field]="form.get('password')" message="* Password is Mandatory "> </app-error-message> -->
 
-          <ion-button color="dark" size="full" fill="clear">Forgot Email/Password</ion-button>
-          <ion-button color="success" (click)="login()" size="full">Login</ion-button>
+          <ion-button color="dark" size="full" fill="clear" [disabled]="!form.get('email')?.valid">Forgot Email/Password</ion-button>
+          <ion-button color="success" (click)="login()" [disabled]="!form.valid" size="full">Login</ion-button>
           <ion-button color="success" (click)="register()" size="full" fill="clear">Register</ion-button>
 
 
