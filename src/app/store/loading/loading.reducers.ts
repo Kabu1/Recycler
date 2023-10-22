@@ -1,16 +1,21 @@
-import { createReducer } from "@ngrx/store";
-import { hide, show } from "./loading.actions";
+import { createReducer, on } from '@ngrx/store';
+import { hide, show } from './loading.actions';
+import { LoadingState } from './loadingState';
 
-const reducer = createReducer({},
 
-on(show,() = > {
-    return {}; 
-}),
-on(hide, ()=>{
-    return {};
-})
+const initialState: LoadingState = {
+    show: false
+}
+const reducer = createReducer(
+  initialState,
+  on(show, () => {
+    return {show : true};
+  }),
+  on(hide, () => {
+    return { show : false};
+  })
 );
 
-export function loadingReducer(state,action) {
-    return reducer(state, action)
+export function loadingReducer(state: LoadingState, action: any) {
+  return reducer(state, action);
 }
