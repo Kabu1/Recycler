@@ -10,7 +10,7 @@ describe('LoginPageForm', ()=> {
         form = loginPageForm.createForm();
     })
 
-
+//fail
     it('should create an empty login form', () =>{
         expect(form).not.toBeNull();
         expect(form.get('email')).not.toBeNull();
@@ -20,6 +20,7 @@ describe('LoginPageForm', ()=> {
         expect(form.get('password')?.value).toEqual("");
         expect(form.get('password')?.valid).toBeFalsy();
     });
+    //fail
     it('should have an email invalid if email is not valid', () => {
         form.get('email')?.setValue('invalid email');
         expect(form.get('email')?.valid).toBeFalsy();

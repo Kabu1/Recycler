@@ -18,10 +18,31 @@ describe('ErrorMessageComponent', () => {
     component = fixture.componentInstance;
   }));
   it('should show error message on touch and error present in the form fields', () => {
-    component.field = new FormGroup({email: new FormControl});
+    component.field = new FormGroup({anyField: new FormControl});
     component.field.markAsTouched();
-    component.field.setErrors({required : true})
+    component.field.setErrors({anyError : true});
+    component.error = 'anyError';
 
     expect(component.shouldShowComponent()).toBeTruthy();
+  })
+  it('should hide error message on field not touched', () => {
+    component.field = new FormGroup({anyField: new FormControl()})
+    component.field.setErrors({anyError : true});
+    component.error = 'anyError';
+    expect(component.shouldShowComponent()).toBeFalsy();
+
+  })
+  it('should hide error message on field touched and no errors', () => {
+    component.field = new FormGroup({anyField: new FormControl()})
+    component.field.markAsTouched();
+    component.error = 'anyError';
+    expect(component.shouldShowComponent()).toBeFalsy();
+
+  })
+  it('should hide error message on field touched and has errors, but it is a different error', () => {
+    component.field = new FormGroup({anyField: new FormControl()})
+    component.field.setErrors({anyError : true});
+    component.error = 'anotherError';
+    expect(component.shouldShowComponent()).toBeFalsy();
   })
 });
