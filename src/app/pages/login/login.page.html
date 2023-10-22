@@ -9,12 +9,11 @@
 
         <ion-card-content>
           <ion-item>
+
             <ion-input label="email" formControlName="email" labelPlacement="floating" type='email' placeholder="email"></ion-input>
           </ion-item>
-          <ion-label color="danger" *ngIf="form.get('email')?.touched && form.get('email')?.errors?.['required']"> * Email is Mandatory</ion-label>
-
-          <ion-label color="danger" *ngIf="form.get('email')?.touched && form.get('email')?.errors?.['email']">* Email is Invalid</ion-label>
-
+          <app-error-message [field]="form.get('email')" message="* Email is Mandatory "> </app-error-message>
+            <app-error-message *ngIf="form.get('email')?.touched && form.get('email')?.errors?.['email']" message="* Email is Invalid "> </app-error-message>
 
           <ion-item>
             <ion-input label="password" formControlName="password" labelPlacement="floating" type='password' placeholder="password"></ion-input>
