@@ -11,7 +11,7 @@ import { SharedModule } from './shared/shared.module';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { LoadingComponent } from './components/loading/loading.component';
 import { AppStoreModule } from './store/AppStoreModule';
-// import { AppStoreModule } from './store/AppStoreModule';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   declarations: [AppComponent, LoadingComponent],
@@ -22,7 +22,7 @@ import { AppStoreModule } from './store/AppStoreModule';
     SharedModule,
     CommonModule,
     AppStoreModule,
-    // ...AppStoreModule,
+    StoreModule,
     StoreDevtoolsModule.instrument({ maxAge: 25 })
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
