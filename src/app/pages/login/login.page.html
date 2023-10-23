@@ -10,23 +10,28 @@
         <ion-card-content>
           <ion-item>
 
-            <ion-input label="email" formControlName="email" labelPlacement="floating" type='email' placeholder="email"></ion-input>
+            <ion-input label="email" formControlName="email" labelPlacement="floating" type='email'
+              placeholder="email"></ion-input>
           </ion-item>
           <!-- fix this issue -->
-          
+
           <app-error-message [field]="$any(form.get('email'))" message="* Email is Mandatory "> </app-error-message>
           <app-error-message [field]="$any(form.get('email'))" message="* Email is Invalid "> </app-error-message>
 
-            <!-- <app-error-message [field]="$any(form.get('email'))" message="* Email is Invalid "> </app-error-message>
+          <!-- <app-error-message [field]="$any(form.get('email'))" message="* Email is Invalid "> </app-error-message>
             <app-error-message [field]="$any(form.get('email'))" message="* Email is Mandatory "> </app-error-message> -->
 
           <ion-item>
-            <ion-input label="password" formControlName="password" labelPlacement="floating" type='password' placeholder="password"></ion-input>
+            <ion-input label="password" formControlName="password" labelPlacement="floating" type='password'
+              placeholder="password"></ion-input>
           </ion-item>
-          <ion-label color="danger" *ngIf="form.get('password')?.touched && form.get('password')?.errors?.['required']">* Password is Mandatory</ion-label>
+          <ion-label color="danger"
+            *ngIf="form.get('password')?.touched && form.get('password')?.errors?.['required']">* Password is
+            Mandatory</ion-label>
           <!-- <app-error-message [field]="form.get('password')" message="* Password is Mandatory "> </app-error-message> -->
 
-          <ion-button color="dark" size="full" fill="clear" [disabled]="!form.get('email')?.valid">Forgot Email/Password</ion-button>
+          <ion-button color="dark" size="full" fill="clear" [disabled]="!form.get('email')?.valid" (click)="forgotEmailPassword()">Forgot
+            Email/Password</ion-button>
           <ion-button color="success" (click)="login()" [disabled]="!form.valid" size="full">Login</ion-button>
           <ion-button color="success" (click)="register()" size="full" fill="clear">Register</ion-button>
 
