@@ -9,6 +9,9 @@ import { loadingReducer } from 'src/app/store/loading/loading.reducers';
 import { loginReducer } from 'src/app/store/login/login.reducer';
 import { AppState } from 'src/app/store/AppState';
 import { recoverPassword, recoverPasswordFail, recoverPasswordSuccess } from 'src/app/store/login/login.actions';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { of, throwError } from 'rxjs';
+import { User } from 'src/app/model/user/user';
 
 describe('LoginPage', () => {
   let component: LoginPage;
@@ -16,7 +19,8 @@ describe('LoginPage', () => {
   let router: Router;
   let page: any;
   let store: Store<AppState>
-  let toastController: ToastController
+  let toastController: ToastController;
+  let authService: AuthService;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -38,17 +42,13 @@ describe('LoginPage', () => {
         page = fixture.debugElement.nativeElement;
         store = TestBed.get(Store);
         toastController = TestBed.get(ToastController)
+        authService = TestBed.get(AuthService)
         fixture.detectChanges();
       });
   }));
   it('should create form on init', () => {
     component.ngOnInit();
     expect(component.form).not.toBeUndefined();
-  });
-  it('should go to home page on login', () => {
-    spyOn(router, 'navigate');
-    component.login();
-    expect(router.navigate).toHaveBeenCalledWith(['home']);
   });
   it('should go to register page on register', () => {
     spyOn(router, 'navigate');
@@ -68,7 +68,8 @@ describe('LoginPage', () => {
     })
   })
   it('Should hide loading and show success message when has recovered password', () => {
-    spyOn(toastController, 'create')
+    // spyOn(toastController, 'create')
+    spyOn(toastController, 'create').and.returnValue(<any> Promise.resolve({present: () =>{}}))
     fixture.detectChanges();
     store.dispatch(recoverPassword());
     store.dispatch(recoverPasswordSuccess());
@@ -82,7 +83,7 @@ describe('LoginPage', () => {
     //verify loadingState
   })
   it('Should hide loading and show error message when there is an error on recover password', () => {
-    spyOn(toastController, 'create')
+    spyOn(toastController, 'create').and.returnValue(<any> Promise.resolve({present: () =>{}}))
     fixture.detectChanges();
     store.dispatch(recoverPassword());
     store.dispatch(recoverPasswordFail({error : 'message'}));
@@ -94,6 +95,64 @@ describe('LoginPage', () => {
     //set login state as recovering password
     //set login state as recovered password
     //verify loadingState
+  }),
+
+  it('should show loading and start loggin when loggin in', () => {
+    //start page
+    fixture.detectChanges()
+    //set valid email
+    component.form.get('email')?.setValue('valid@email.com');
+    //set any password
+    component.form.get('password')?.setValue('anyPassword');
+    //click on login button
+    page.querySelector('#loginButton').click();
+    //expect loading is showing
+    store.select('loading').subscribe(loadingState =>{
+      expect(loadingState.show).toBeTruthy();
+    })
+    //expect loggin in
+    store.select('login').subscribe(loginState =>{
+      expect(loginState.isLoggingIn).toBeTruthy()
+    })
+  })
+  it('should hide loading and send user to home page when user has logged in', () => {
+    spyOn(router,'navigate');
+    spyOn(authService, 'login').and.returnValue(of(new User()));
+    //start page
+    fixture.detectChanges()
+    //set valid email
+    component.form.get('email')?.setValue('valid@email.com');
+    //set valid password
+    component.form.get('password')?.setValue('anyPassword');
+    //click on login button
+    page.querySelector('#loginButton').click();
+    //expect loading hidden
+    store.select('loading').subscribe(loadingState => {
+      expect(loadingState.show).toBeFalsy();
+    })
+    //expect loggin in
+    store.select('login').subscribe(loginState => {
+      expect(loginState.isLoggedIn).toBeTruthy();
+    })
+    //expect home page showing
+    expect(router.navigate).toHaveBeenCalledWith(['home'])
+  }),
+  it('should hide loading and show error when user couldnot login', () => {
+    spyOn(authService, 'login').and.returnValue(throwError({message: 'error'}));
+    spyOn(toastController, 'create').and.returnValue(<any> Promise.resolve({present: () =>{}}))
+    //start page
+    fixture.detectChanges()
+    //set valid email
+    component.form.get('email')?.setValue('error@email.com');
+    //set valid password
+    component.form.get('password')?.setValue('anyPassword');
+    //click on login button
+    page.querySelector('#loginButton').click();
+    //expect loading hidden
+    store.select('loading').subscribe(loadingState => {
+      expect(loadingState.show).toBeFalsy();
+    })
+    expect(toastController.create).toHaveBeenCalledTimes(1)
   })
 
 });
