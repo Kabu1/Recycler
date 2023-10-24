@@ -12,6 +12,10 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { LoadingComponent } from './components/loading/loading.component';
 import { AppStoreModule } from './store/AppStoreModule';
 import { StoreModule } from '@ngrx/store';
+import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+
+
 
 @NgModule({
   declarations: [AppComponent, LoadingComponent],
@@ -23,7 +27,10 @@ import { StoreModule } from '@ngrx/store';
     CommonModule,
     AppStoreModule,
     StoreModule,
-    StoreDevtoolsModule.instrument({ maxAge: 25 })
+    StoreDevtoolsModule.instrument({ maxAge: 25 }),
+    provideFirebaseApp(() => initializeApp({})),
+    provideFirestore(() => getFirestore()),
+    // AngularFireModule.initializeApp(environment.firebaseConfig)
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
