@@ -14,7 +14,9 @@ import { AppStoreModule } from './store/AppStoreModule';
 import { StoreModule } from '@ngrx/store';
 import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideStorage, getStorage } from '@angular/fire/storage';
+import { environment } from 'src/environments/environment';
 
 
 @NgModule({
@@ -28,11 +30,16 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
     AppStoreModule,
     StoreModule,
     StoreDevtoolsModule.instrument({ maxAge: 25 }),
-    provideFirebaseApp(() => initializeApp({})),
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    // AngularFireModule.initializeApp(environment.firebaseConfig)
+    provideStorage(() => getStorage()),
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+
+    // provideFirebaseApp(() => initializeApp({})),
+    // provideFirestore(() => getFirestore()),
+    // AngularFireModule.initializeApp(environment.firebaseConfig)

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/model/user/user';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor() { }
+  constructor(private auth : AngularFireAuth) { }
   recoverEmailPassword(email: string) : Observable<void> {
     return new Observable<void> (observer => {
       setTimeout(() => {
