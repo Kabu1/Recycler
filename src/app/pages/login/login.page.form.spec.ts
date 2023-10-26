@@ -10,7 +10,6 @@ describe('LoginPageForm', ()=> {
         form = loginPageForm.createForm();
     })
 
-//fail
     it('should create an empty login form', () =>{
         expect(form).not.toBeNull();
         expect(form.get('email')).not.toBeNull();

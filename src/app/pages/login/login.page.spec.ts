@@ -10,8 +10,10 @@ import { loginReducer } from 'src/app/store/login/login.reducer';
 import { AppState } from 'src/app/store/AppState';
 import { recoverPassword, recoverPasswordFail, recoverPasswordSuccess } from 'src/app/store/login/login.actions';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { of, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { User } from 'src/app/model/user/user';
+import { AngularFireModule } from '@angular/fire/compat/';
+import { environment } from 'src/environments/environment';
 
 describe('LoginPage', () => {
   let component: LoginPage;
@@ -31,7 +33,8 @@ describe('LoginPage', () => {
         IonicModule,
         StoreModule.forRoot([]),
         StoreModule.forFeature("loading", loadingReducer),
-        StoreModule.forFeature("login", loginReducer)
+        StoreModule.forFeature("login", loginReducer),
+        AngularFireModule.initializeApp(environment.firebaseConfig)
       ],
     })
       .compileComponents()
@@ -56,6 +59,10 @@ describe('LoginPage', () => {
     expect(router.navigate).toHaveBeenCalledWith(['register']);
   });
   it('Should recover email/password when user clicks forgot email/password', () => {
+    spyOn(authService, 'recoverEmailPassword').and.returnValue(new Observable(() => {
+      
+    }))
+
     //start page
     fixture.detectChanges();
     //user set valid email
@@ -65,6 +72,9 @@ describe('LoginPage', () => {
         //expect loginstate.isrecoveringpassword is true
     store.select('login').subscribe(loginState => {
       expect(loginState.isRecoveringPassword).toBeTruthy();
+    })
+    store.select('loading').subscribe(loadingState => {
+      expect(loadingState.show).toBeTruthy();
     })
   })
   it('Should hide loading and show success message when has recovered password', () => {
@@ -98,6 +108,9 @@ describe('LoginPage', () => {
   }),
 
   it('should show loading and start loggin when loggin in', () => {
+    spyOn(authService, 'login').and.returnValue(new Observable(() => {
+
+    })),
     //start page
     fixture.detectChanges()
     //set valid email
