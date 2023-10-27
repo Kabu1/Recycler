@@ -138,7 +138,7 @@ describe('LoginPage', () => {
     spyOn(toastController, 'create').and.returnValue(<any> Promise.resolve({present: () =>{}}))
     //start page
     fixture.detectChanges()
-    store.dispatch(login());
+    store.dispatch(login({email: "valid@email.com", password: 'anyPassword'}));
     store.dispatch(loginFail({error: {messsage: 'error message'}}))
     store.select('loading').subscribe(loadingState => {
       expect(loadingState.show).toBeFalsy();
