@@ -28,12 +28,3 @@ export class AuthGuard implements CanLoad {
 }
 
 
-// this.loginStateSubscription = this.store.select('login').subscribe(async (loginState) => {
-//   this.onIsRecoveredPassword(loginState)
-//   this.onError(loginState)
-//   this.onIsLoggedIn(loginState)
-
-  
-//   this.toggleLoading(loginState);
-// });
-
