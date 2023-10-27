@@ -1,22 +1,31 @@
 import { Action, StoreModule } from "@ngrx/store";
 import { Observable, of, throwError } from "rxjs";
 import { LoginEffects } from "./login.effects";
-import { recoverPassword, recoverPasswordFail, recoverPasswordSuccess } from "./login.actions";
+import { login, loginFail, loginSuccess, recoverPassword, recoverPasswordFail, recoverPasswordSuccess } from "./login.actions";
 import { TestBed } from "@angular/core/testing";
 import { provideMockActions } from '@ngrx/effects/testing'
 import { AuthService } from "src/app/services/auth/auth.service";
 import { EffectsModule } from "@ngrx/effects"
+import { User } from "src/app/model/user/user";
 
 describe('login effects', () => {
     let effects: LoginEffects;
     let actions$: Observable<Action>;
-    let error = {error: 'error'}
+    let error = {error: 'error'};
+    let user = new User();
+    user.id = "anyUserId";
     let authServiceMock = {
         recoverEmailPassword: (email: string) => {
             if(email == 'error@email.com'){
                 return throwError(error);
             }
             return of({});
+        },
+        login: (email: string, password: string) => {
+            if(email == 'error@email.com'){
+                return throwError(error);
+            }
+            return of(user);
         }
     }
 
@@ -57,4 +66,22 @@ describe('login effects', () => {
             done();
         })
     })
+
+    it('should login with valid credentials return success', done => {
+        actions$ = of(login({email: "valid@email.com", password: 'anyPassword'}));
+
+        effects.login$.subscribe(newAction => {
+            expect(newAction).toEqual(loginSuccess({user}));
+        
+        })
+    })
+    it('should login with invalid credentials return error ', done => {
+        actions$ = of(login({email: "error@email.com", password: 'anyPassword'}));
+
+        effects.login$.subscribe(newAction => {
+            expect(newAction).toEqual(loginFail({error}));
+        
+        })
+    })
+
 })

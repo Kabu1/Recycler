@@ -121,7 +121,7 @@ describe('LoginPage', () => {
     spyOn(router,'navigate');
     //start page
     fixture.detectChanges();
-    store.dispatch(login());
+    store.dispatch(login({email: "valid@email.com", password: 'anyPassword'}));
     store.dispatch(loginSuccess({user: new User()}))
     //expect loading hidden
     store.select('loading').subscribe(loadingState => {
