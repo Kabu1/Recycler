@@ -3,14 +3,23 @@ import { RegisterPage } from './register.page';
 import { Router } from '@angular/router';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ToastController } from '@ionic/angular';
 import { RegisterPageModule } from './register.module';
+import { AppState } from '@capacitor/app';
+import { Store, StoreModule } from '@ngrx/store';
+import { loadingReducer } from 'src/app/store/loading/loading.reducers';
+import { registerReducer } from 'src/app/store/register/register.reducer';
+import { UserRegister } from 'src/app/model/user/userRegister';
+import { register, registerFail, registerSuccess } from 'src/app/store/register/register.actions';
 
 describe('RegisterPage', () => {
+
   let component: RegisterPage;
   let fixture: ComponentFixture<RegisterPage>;
-  let router: Router;
   let page: any;
+  let router : Router
+  let store: Store<AppState>
+  let toastController: ToastController
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [RegisterPage], // Declare the component under test
@@ -18,14 +27,20 @@ describe('RegisterPage', () => {
         IonicModule.forRoot(),
         AppRoutingModule,
         ReactiveFormsModule,
-        RegisterPageModule
+        RegisterPageModule,
+        StoreModule.forRoot([]),
+        StoreModule.forFeature('loading', loadingReducer),
+        StoreModule.forFeature('register', registerReducer)
+
       ]
     })
     .compileComponents()
     .then(() => {
       fixture = TestBed.createComponent(RegisterPage);
+      store = TestBed.get(Store);
       router = TestBed.get(Router)
       page = fixture.debugElement.nativeElement;
+      toastController = TestBed.get(ToastController)
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
@@ -39,11 +54,69 @@ describe('RegisterPage', () => {
     fixture.detectChanges();
     expect(component.registerForm).not.toBeUndefined();
   });
-
-  it('should redirect to home on register', ()=>{
+  it('should not be allowed to register with form invalid', ()=>{
     fixture.detectChanges();
-    spyOn(router, 'navigate')
-    component.registerForm.getForm().get('name')?.setValue('anyName');
+
+    clickOnRegisterButton(page);
+    store.select("register").subscribe(state => {
+      expect(state.isRegistering).toBeFalsy();
+  })
+})
+  it('given form is valid, when user clicks on register, then register', ()=>{
+    fixture.detectChanges();
+    fillForm(component);
+    clickOnRegisterButton(page);
+    store.select("register").subscribe(state => {
+      expect(state.isRegistering).toBeTruthy();
+  })
+})
+it('given form is valid, when user clicks on register, then show loading', ()=>{
+  fixture.detectChanges();
+  fillForm(component);
+  clickOnRegisterButton(page);
+  store.select("loading").subscribe(state => {
+    expect(state.show).toBeTruthy();
+  })
+})
+it('should hide loading component when registration successful', ()=>{
+  fixture.detectChanges();
+  store.dispatch(register({userRegister: new UserRegister()}));
+  store.dispatch(registerSuccess());
+  store.select("loading").subscribe(state => {
+    expect(state.show).toBeFalsy();
+  })
+})
+it('should go to home page when registration successful', ()=>{
+  fixture.detectChanges();
+  spyOn(router, 'navigate');
+  store.dispatch(register({userRegister: new UserRegister()}));
+  store.dispatch(registerSuccess());
+  
+    expect(router.navigate).toHaveBeenCalledWith(['home']);
+})
+it('should hide loading component when registration fails', ()=>{
+  fixture.detectChanges();
+  spyOn(router, 'navigate');
+  store.dispatch(register({userRegister: new UserRegister()}));
+  store.dispatch(registerFail({error: {message: 'any message'}}));
+  
+    expect(router.navigate).toHaveBeenCalledWith(['home']);
+})
+it('should show error when registration fails', ()=>{
+  fixture.detectChanges();
+  spyOn(router, 'navigate');
+  spyOn(toastController, 'create').and.returnValue(<any>Promise.resolve({present: () =>{}}))
+  store.dispatch(register({userRegister: new UserRegister()}));
+  store.dispatch(registerFail({error: {message: 'any message'}}));
+  
+    expect(toastController.create).toHaveBeenCalledWith();
+})
+
+function clickOnRegisterButton(page: any){
+  page.querySelector('ion-button').click()
+}
+function fillForm(component: any){
+  component.registerForm.getForm().get('name')?.setValue('anyName');
     component.registerForm.getForm().get('email')?.setValue('any@email.com');
     component.registerForm.getForm().get('password')?.setValue('anyPassword');
     component.registerForm.getForm().get('repeatPassword')?.setValue('anyName');
@@ -53,15 +126,5 @@ describe('RegisterPage', () => {
     component.registerForm.getForm().get('address')?.get('zipCode')?.setValue('any zipCode');
     component.registerForm.getForm().get('address')?.get('city')?.setValue('any city');
     component.registerForm.getForm().get('address')?.get('state')?.setValue('any state');
-
-    page.querySelector('ion-button').click()
-    expect(router.navigate).toHaveBeenCalledWith(['home'])
-  })
-  it('should not be allowed to register with form invalid', ()=>{
-    fixture.detectChanges();
-    spyOn(router, 'navigate')
-
-    page.querySelector('ion-button').click()
-    expect(router.navigate).toHaveBeenCalledTimes(0)
-  })
-});
+}
+})
