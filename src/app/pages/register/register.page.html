@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar color="success">
     <ion-buttons slot="start">
       <ion-back-button title=""></ion-back-button>
@@ -7,32 +7,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>
-        What do you want to do with the recycable waste?
-      </ion-card-title>
-    </ion-card-header>
-    <ion-radio-group value="custom-checked">
-      <ion-item>
-        <ion-label>I want to BUY IT</ion-label>
-        <ion-radio
-          value="Client"
-          aria-label="Custom checkbox"
-          slot="start"
-        ></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>I want to SELL IT</ion-label>
-        <ion-radio
-          value="Partner"
-          aria-label="Custom checkbox"
-          slot="start"
-        ></ion-radio>
-      </ion-item>
-    </ion-radio-group>
-  </ion-card>
+<ion-content>
+  <form [formGroup]="registerForm.getForm()">
   <ion-card>
     <ion-card-header>
       <ion-title> Contact </ion-title>
@@ -43,6 +19,19 @@
         labelPlacement="floating"
         type="name"
         placeholder="Name"
+        formControlName="name"
+      ></ion-input>
+    </ion-item>
+    <app-error-message [field]="$any(registerForm.getForm().get('name'))" message="* name is Mandatory"></app-error-message>
+
+
+    <ion-item>
+      <ion-input
+        label="Phone Number"
+        labelPlacement="floating"
+        type="tel"
+        placeholder="Phone Number"
+        formControlName="phone"
       ></ion-input>
     </ion-item>
     <ion-item>
@@ -51,6 +40,7 @@
         labelPlacement="floating"
         type="email"
         placeholder="Email"
+        formControlName="email"
       ></ion-input>
     </ion-item>
     <ion-item>
@@ -59,6 +49,7 @@
         labelPlacement="floating"
         type="password"
         placeholder="Password"
+        formControlName="password"
       ></ion-input>
     </ion-item>
     <ion-item>
@@ -67,18 +58,12 @@
         labelPlacement="floating"
         type="password"
         placeholder="Confirm Password"
+        formControlName="repeatPassword"
       ></ion-input>
     </ion-item>
-    <ion-item>
-      <ion-input
-        label="Phone Number"
-        labelPlacement="floating"
-        type="tel"
-        placeholder="Phone Number"
-      ></ion-input>
-    </ion-item>
+   
   </ion-card>
-  <ion-card>
+  <ion-card formGroupName="address">
     <ion-card-header>
       <ion-title> Address Information</ion-title>
     </ion-card-header>
@@ -88,6 +73,7 @@
         labelPlacement="floating"
         type="text"
         placeholder="Address"
+        formControlName="street"
       ></ion-input>
     </ion-item>
     <ion-item>
@@ -96,22 +82,7 @@
         labelPlacement="floating"
         type="tel"
         placeholder="Number"
-      ></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input
-        label="Neighborhood"
-        labelPlacement="floating"
-        type="text"
-        placeholder="Neighborhood"
-      ></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input
-        label="Complement"
-        labelPlacement="floating"
-        type="text"
-        placeholder="Complement"
+        formControlName="number"
       ></ion-input>
     </ion-item>
     <ion-item>
@@ -120,6 +91,7 @@
         labelPlacement="floating"
         type="text"
         placeholder="Zip Code"
+        formControlName="zipCode"
       ></ion-input>
     </ion-item>
     <ion-item>
@@ -128,6 +100,7 @@
         labelPlacement="floating"
         type="text"
         placeholder="State"
+        formControlName="state"
       ></ion-input>
     </ion-item>
     <ion-item>
@@ -136,8 +109,10 @@
         labelPlacement="floating"
         type="tel"
         placeholder="City"
+        formControlName="city"
       ></ion-input>
     </ion-item>
   </ion-card>
   <ion-button size="full" color="light" (click)="register()" >Register</ion-button>
+</form>
 </ion-content>
