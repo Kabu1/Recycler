@@ -4,6 +4,7 @@ import { loginReducer } from "./login/login.reducer";
 import { LoginEffects } from "./login/login.effects";
 import { EffectsModule } from "@ngrx/effects"
 import { registerReducer } from "./register/register.reducer";
+import { RegisterEffects } from "./register/register.effects";
 
 export const AppStoreModule = [
     StoreModule.forRoot([]),
@@ -12,7 +13,8 @@ export const AppStoreModule = [
     StoreModule.forFeature('register', registerReducer),
     EffectsModule.forRoot([]),
     EffectsModule.forFeature([
-        LoginEffects
+        LoginEffects,
+        RegisterEffects
     ]),
 
 

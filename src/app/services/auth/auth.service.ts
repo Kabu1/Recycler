@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { User } from 'src/app/model/user/user';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import * as firebase from 'firebase/compat/app';
+import { UserRegister } from 'src/app/model/user/userRegister';
 
 
 @Injectable({
@@ -25,6 +26,18 @@ export class AuthService {
         observer.next(error);
         observer.complete();
       })
+    })
+  }
+  register(userRegister: UserRegister): Observable <void>{
+    return new Observable <void>(observer => {
+      setTimeout(() => {
+        if(userRegister.email == 'error@email.com'){
+         observer.error({message: 'email is already registered'});
+      } else {
+        observer.next();
+      }
+      observer.complete();
+      }, 3000)
     })
   }
   login(email: string, password: string): Observable<User> {
