@@ -22,9 +22,10 @@
         formControlName="name"
       ></ion-input>
     </ion-item>
-    <app-error-message [field]="$any(registerForm.getForm().get('name'))" message="* name is Mandatory"></app-error-message>
-
-
+    <!-- <app-error-message [field]="$any(registerForm.getForm().get('name'))" message="* name is Mandatory"></app-error-message> -->
+    <ion-label color="danger"
+    *ngIf="registerForm.getForm().get('name')?.touched && registerForm.getForm().get('name')?.errors?.['required']">* Name is
+    Mandatory</ion-label>
     <ion-item>
       <ion-input
         label="Phone Number"
@@ -34,6 +35,10 @@
         formControlName="phone"
       ></ion-input>
     </ion-item>
+    <!-- <app-error-message [field]="$any(registerForm.getForm().get('phone'))" message="* phone is Mandatory"></app-error-message> -->
+    <ion-label color="danger"
+    *ngIf="registerForm.getForm().get('phone')?.touched && registerForm.getForm().get('phone')?.errors?.['required']">* Phone Number is
+    Mandatory</ion-label>
     <ion-item>
       <ion-input
         label="Email"
@@ -43,6 +48,9 @@
         formControlName="email"
       ></ion-input>
     </ion-item>
+    <ion-label color="danger"
+    *ngIf="registerForm.getForm().get('email')?.touched && registerForm.getForm().get('email')?.errors?.['required']">*Email is
+    Mandatory</ion-label>
     <ion-item>
       <ion-input
         label="Password"
@@ -52,6 +60,11 @@
         formControlName="password"
       ></ion-input>
     </ion-item>
+    <ion-label color="danger"
+    *ngIf="registerForm.getForm().get('password')?.touched && registerForm.getForm().get('password')?.errors?.['required']">*Password is
+    Mandatory</ion-label>
+    <ion-label color="danger"
+    *ngIf="registerForm.getForm().get('password')?.touched && registerForm.getForm().get('password')?.errors?.['minlength']">*Minimum of 6 characters</ion-label>
     <ion-item>
       <ion-input
         label="Confirm Password"
@@ -61,6 +74,9 @@
         formControlName="repeatPassword"
       ></ion-input>
     </ion-item>
+    <ion-label color="danger"
+    *ngIf="registerForm.getForm().get('repeatPassword')?.touched && registerForm.getForm().get('repeatPassword')?.errors?.['isMatching']">*Password and repeat password
+    are different</ion-label>
    
   </ion-card>
   <ion-card formGroupName="address">

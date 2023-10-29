@@ -9,7 +9,8 @@ import { RegisterPageModule } from './register.module';
 describe('RegisterPage', () => {
   let component: RegisterPage;
   let fixture: ComponentFixture<RegisterPage>;
-  let router: Router
+  let router: Router;
+  let page: any;
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [RegisterPage], // Declare the component under test
@@ -24,7 +25,7 @@ describe('RegisterPage', () => {
     .then(() => {
       fixture = TestBed.createComponent(RegisterPage);
       router = TestBed.get(Router)
-
+      page = fixture.debugElement.nativeElement;
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
@@ -40,8 +41,27 @@ describe('RegisterPage', () => {
   });
 
   it('should redirect to home on register', ()=>{
+    fixture.detectChanges();
     spyOn(router, 'navigate')
-    component.register()
+    component.registerForm.getForm().get('name')?.setValue('anyName');
+    component.registerForm.getForm().get('email')?.setValue('any@email.com');
+    component.registerForm.getForm().get('password')?.setValue('anyPassword');
+    component.registerForm.getForm().get('repeatPassword')?.setValue('anyName');
+    component.registerForm.getForm().get('phone')?.setValue('anyPhone');
+    component.registerForm.getForm().get('address')?.get('street')?.setValue('any street');
+    component.registerForm.getForm().get('address')?.get('number')?.setValue('any number');
+    component.registerForm.getForm().get('address')?.get('zipCode')?.setValue('any zipCode');
+    component.registerForm.getForm().get('address')?.get('city')?.setValue('any city');
+    component.registerForm.getForm().get('address')?.get('state')?.setValue('any state');
+
+    page.querySelector('ion-button').click()
     expect(router.navigate).toHaveBeenCalledWith(['home'])
+  })
+  it('should not be allowed to register with form invalid', ()=>{
+    fixture.detectChanges();
+    spyOn(router, 'navigate')
+
+    page.querySelector('ion-button').click()
+    expect(router.navigate).toHaveBeenCalledTimes(0)
   })
 });

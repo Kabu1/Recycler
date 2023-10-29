@@ -21,7 +21,10 @@ export class RegisterPage implements OnInit {
     this.createForm()
   }
   register(){
-    this.router.navigate(['home'])
+    this.registerForm.getForm().markAllAsTouched();
+    if(this.registerForm.getForm().valid){
+      this.router.navigate(['home'])
+    }
   }
   createForm(){
     this.registerForm = new RegisterPageForm(this.formBuilder)
