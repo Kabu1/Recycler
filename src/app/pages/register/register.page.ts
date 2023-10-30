@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { RegisterPageForm } from './form/register.page.form';
 import { FormBuilder } from '@angular/forms';
@@ -7,17 +7,17 @@ import { Store } from '@ngrx/store';
 import { register } from 'src/app/store/register/register.actions';
 import { RegisterState } from 'src/app/store/register/RegisterState';
 import { hide, show } from 'src/app/store/loading/loading.actions';
-import { NavController, ToastController } from '@ionic/angular';
+import { IonInput, NavController, ToastController } from '@ionic/angular';
 import { login } from 'src/app/store/login/login.actions';
 import { Subscription } from 'rxjs';
-
+declare var google: any;
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit, OnDestroy {
-
+@ViewChild('autocomplete') autocomplete!: IonInput
   registerForm!: RegisterPageForm;
   registeredStateSubscription!: Subscription;
   constructor(
@@ -36,6 +36,16 @@ export class RegisterPage implements OnInit, OnDestroy {
     this.createForm()
     this.watchRegisterState()
   }
+  ionViewDidEnter(){
+    this.autocomplete.getInputElement().then((ref: any) => {
+      const autocomplete = new google.maps.places.Autocomplete(ref);
+      autocomplete.addListener('place_changed', () => {
+        // console.log(autocomplete.getPlace());
+        this.registerForm.setAddress(autocomplete.getPlace())
+      })
+    })
+  }
+
   register(){
     this.registerForm.getForm().markAllAsTouched();
     if(this.registerForm.getForm().valid){

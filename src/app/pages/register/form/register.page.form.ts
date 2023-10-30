@@ -1,4 +1,5 @@
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { findAddressNumber, findCity, findState, findStreet, findZipCode } from "src/app/utils/address-utils";
 
 export class RegisterPageForm {
     private formBuilder: FormBuilder;
@@ -34,6 +35,17 @@ export class RegisterPageForm {
     getForm() : FormGroup {
         return this.form;
     }
+     setAddress(place : any){
+        const addressForm = this.form.get('address');
+        addressForm?.get('street')?.setValue(findStreet(place.address_components));
+        addressForm?.get('number')?.setValue(findAddressNumber(place.address_components));
+        addressForm?.get('zipCode')?.setValue(findZipCode(place.address_components));
+        addressForm?.get('state')?.setValue(findState(place.address_components));
+        addressForm?.get('city')?.setValue(findCity(place.address_components));
+
+
+     }
+    
 }
    function matchRepeatPassword(form: FormGroup) {
         const password = form.get('password');
