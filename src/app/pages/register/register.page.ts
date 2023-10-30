@@ -10,6 +10,8 @@ import { hide, show } from 'src/app/store/loading/loading.actions';
 import { IonInput, NavController, ToastController } from '@ionic/angular';
 import { login } from 'src/app/store/login/login.actions';
 import { Subscription } from 'rxjs';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+
 declare var google: any;
 @Component({
   selector: 'app-register',
@@ -25,7 +27,8 @@ export class RegisterPage implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private store: Store<AppState>,
     private toastController: ToastController,
-    private navController: NavController
+    private navController: NavController,
+    private geolocation: Geolocation
 
     ) { }
   ngOnDestroy() {
@@ -35,6 +38,11 @@ export class RegisterPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm()
     this.watchRegisterState()
+  }
+  fillUserAddressWithUSerCurrentPosition(){
+    this.geolocation.getCurrentPosition().then(position =>{
+      console.log('position', position)
+    })
   }
   ionViewDidEnter(){
     this.autocomplete.getInputElement().then((ref: any) => {

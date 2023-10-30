@@ -8,6 +8,8 @@ import { RegisterPageRoutingModule } from './register-routing.module';
 
 import { RegisterPage } from './register.page';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+
 
 @NgModule({
   imports: [
@@ -18,6 +20,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     ReactiveFormsModule,
     SharedModule
   ],
-  declarations: [RegisterPage]
+  declarations: [RegisterPage],
+  providers: [Geolocation]
 })
 export class RegisterPageModule {}
