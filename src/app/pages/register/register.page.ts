@@ -11,6 +11,7 @@ import { IonInput, NavController, ToastController } from '@ionic/angular';
 import { login } from 'src/app/store/login/login.actions';
 import { Subscription } from 'rxjs';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { LocationService } from 'src/app/services/location.service';
 
 declare var google: any;
 @Component({
@@ -28,7 +29,8 @@ export class RegisterPage implements OnInit, OnDestroy {
     private store: Store<AppState>,
     private toastController: ToastController,
     private navController: NavController,
-    private geolocation: Geolocation
+    private geolocation: Geolocation,
+    private locationService: LocationService
 
     ) { }
   ngOnDestroy() {
@@ -41,6 +43,9 @@ export class RegisterPage implements OnInit, OnDestroy {
   }
   fillUserAddressWithUSerCurrentPosition(){
     this.geolocation.getCurrentPosition().then(position =>{
+      this.locationService.geocode(position.coords).subscribe(result => {
+        this.registerForm.setAddress(result);
+      });
       console.log('position', position)
     })
   }
